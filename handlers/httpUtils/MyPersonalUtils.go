@@ -1,10 +1,10 @@
 package httpUtils
 
 import (
-	"SatarShipRESTAPI/ErrorDescription"
 	"SatarShipRESTAPI/structures"
 	"SatarShipRESTAPI/variables"
 	"net/http"
+	"strings"
 )
 
 func structureDistributor(value interface{}) {
@@ -30,26 +30,9 @@ func structureDistributor(value interface{}) {
 	}
 }
 
-func TypeDefinitionAndVariableDeclaration(r *http.Request, w http.ResponseWriter) interface{} {
-	var temp interface{}
-	switch r.URL.Path {
-	case "/Modules/", "/Module":
-		{
-			temp = &structures.Module{}
-			return temp
-		}
-	case "/Crew/", "/Crew":
-		{
-			temp = &structures.CrewMember{}
-			return temp
-		}
-	case "/Resources/", "/Resources":
-		{
-			temp = &structures.StationResource{}
-			return temp
-		}
-	default:
-		http.Error(w, ErrorDescription.UnknownEndpoint, http.StatusBadRequest)
-		return nil
-	}
+//func TypeDefinitionAndVariableDeclaration(r *http.Request, w http.ResponseWriter) interface{} {
+//}
+
+func GetRoute(r *http.Request) (result string) {
+	return result[:strings.Index(r.URL.Path[1:], "/")+2]
 }

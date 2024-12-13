@@ -22,6 +22,7 @@ func ModulesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ModuleByIDHandler(w http.ResponseWriter, r *http.Request) {
+	httpUtils.HandleGetRequestById(w, r)
 	idString := r.URL.Path[len("/modules/"):]
 	id, err := strconv.Atoi(idString)
 	if err != nil {

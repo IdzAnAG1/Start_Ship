@@ -14,3 +14,7 @@ func HandleGetRequest(w http.ResponseWriter, structure interface{}) {
 	}
 	w.Header().Set(variables.ContentType, variables.ApplicationJSON)
 }
+
+func HandleGetRequestById(w http.ResponseWriter, r *http.Request) {
+	//path := r.URL.Path
+}

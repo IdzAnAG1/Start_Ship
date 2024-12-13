@@ -1,42 +1,22 @@
 package main
 
 import (
-	"SatarShipRESTAPI/handlers/httpUtils"
-	"SatarShipRESTAPI/structures"
+	"SatarShipRESTAPI/handlers"
 	"fmt"
+	"net/http"
 )
 
 func main() {
-	temp := []structures.Module{
-		{
-			ID:     1,
-			Name:   "Temp1",
-			Status: "ok",
-			Power:  103,
-		},
-		{
-			ID:     2,
-			Name:   "Temp2",
-			Status: "ok",
-			Power:  103,
-		},
-	}
-	temp2 := []structures.CrewMember{
-		{
-			ID:              1,
-			Name:            "Temp1",
-			CurrentPosition: "Captain",
-			ModuleID:        temp[1].Name,
-		},
-		{
-			ID:              2,
-			Name:            "Temp2",
-			CurrentPosition: "Captain",
-			ModuleID:        temp[1].Name,
-		},
-	}
+	http.HandleFunc("/", handlers.Relocation)
+	http.HandleFunc("/Modules", handlers.ModulesHandler)
+	http.HandleFunc("/Modules/", handlers.ModuleByIDHandler)
+	http.HandleFunc("/Crew", handlers.CrewHandler)
+	http.HandleFunc("/Crew/", handlers.CrewMemberByIDheandler)
 
-	test2 := httpUtils.StructInitializer(temp[0])
-	test3 := httpUtils.StructInitializer(temp2[0])
-	fmt.Println(test2, "- test2 |", test3, "- test3")
+	fmt.Println("Server was launched in http://localhost:8080/Modules")
+
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		return
+	}
 }
