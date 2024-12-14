@@ -11,7 +11,7 @@ func main() {
 	http.HandleFunc("/Modules", handlers.ModulesHandler)
 	http.HandleFunc("/Modules/", handlers.ModuleByIDHandler)
 	http.HandleFunc("/Crew", handlers.CrewHandler)
-	http.HandleFunc("/Crew/", handlers.CrewMemberByIDheandler)
+	http.HandleFunc("/Crew/", handlers.CrewMemberHandler)
 
 	fmt.Println("Server was launched in http://localhost:8080/Modules")
 

@@ -1,8 +1,10 @@
 package httpUtils
 
 import (
+	"SatarShipRESTAPI/ErrorDescription"
 	"SatarShipRESTAPI/structures"
 	"SatarShipRESTAPI/variables"
+	"encoding/json"
 	"net/http"
 	"strings"
 )
@@ -30,9 +32,57 @@ func structureDistributor(value interface{}) {
 	}
 }
 
-//func TypeDefinitionAndVariableDeclaration(r *http.Request, w http.ResponseWriter) interface{} {
-//}
+func GetRoute(Path string) string {
+	return Path[:strings.Index(Path[1:], "/")+2]
+}
 
-func GetRoute(r *http.Request) (result string) {
-	return result[:strings.Index(r.URL.Path[1:], "/")+2]
+func Determiner(string2 string) interface{} {
+	switch string2 {
+	case variables.CrewRoute:
+		return &structures.CrewMember{}
+	case variables.ModulesRoute:
+		return &structures.Module{}
+	case variables.ResourceRoute:
+		return &structures.StationResource{}
+	}
+	return nil
+}
+
+func findModuleById(id int, w http.ResponseWriter) {
+	for _, module := range variables.Modules {
+		if module.ID == id {
+			w.Header().Set(variables.ContentType, variables.ApplicationJSON)
+			err := json.NewEncoder(w).Encode(module)
+			if err != nil {
+				http.Error(w, ErrorDescription.InvalidEncode, http.StatusBadRequest)
+				return
+			}
+		}
+	}
+}
+
+func findCrewMemberByID(id int, w http.ResponseWriter) {
+	for _, crewMember := range variables.Crew {
+		if crewMember.ID == id {
+			w.Header().Set(variables.ContentType, variables.ApplicationJSON)
+			err := json.NewEncoder(w).Encode(crewMember)
+			if err != nil {
+				http.Error(w, ErrorDescription.InvalidEncode, http.StatusBadRequest)
+				return
+			}
+		}
+	}
+}
+
+func findStationResourceByID(id int, w http.ResponseWriter) {
+	for _, resource := range variables.StationResources {
+		if resource.ID == id {
+			w.Header().Set(variables.ContentType, variables.ApplicationJSON)
+			err := json.NewEncoder(w).Encode(resource)
+			if err != nil {
+				http.Error(w, ErrorDescription.InvalidEncode, http.StatusBadRequest)
+				return
+			}
+		}
+	}
 }
