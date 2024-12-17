@@ -4,7 +4,6 @@ import (
 	"SatarShipRESTAPI/ErrorDescription"
 	"SatarShipRESTAPI/handlers/httpUtils"
 	"SatarShipRESTAPI/variables"
-	"fmt"
 	"net/http"
 )
 
@@ -26,6 +25,6 @@ func CrewMemberHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPut:
 		httpUtils.HandlePutRequest(w, r)
 	case http.MethodDelete:
-		fmt.Println("sdfasdf")
+		httpUtils.HandleDeleteMethod(w, r)
 	}
 }

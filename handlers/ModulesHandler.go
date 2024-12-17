@@ -4,7 +4,6 @@ import (
 	"SatarShipRESTAPI/ErrorDescription"
 	"SatarShipRESTAPI/handlers/httpUtils"
 	"SatarShipRESTAPI/variables"
-	"fmt"
 	"net/http"
 )
 
@@ -24,9 +23,9 @@ func ModuleByIDHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		httpUtils.HandleGetRequestById(w, r)
 	case http.MethodPut:
-		fmt.Println("fdsa")
+		httpUtils.HandlePutRequest(w, r)
 	case http.MethodDelete:
-		fmt.Println("asdf")
+		httpUtils.HandleDeleteMethod(w, r)
 	default:
 		http.Error(w, ErrorDescription.InvalidMethod, http.StatusMethodNotAllowed)
 	}

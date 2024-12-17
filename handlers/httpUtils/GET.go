@@ -8,6 +8,8 @@ import (
 	"strconv"
 )
 
+// HandleGetRequest - Метод обработки GET запроса используется при описании Handler
+// для любой из структур которая указана в этом проекте
 func HandleGetRequest(w http.ResponseWriter, structure interface{}) {
 	err := json.NewEncoder(w).Encode(structure)
 	if err != nil {
@@ -16,6 +18,8 @@ func HandleGetRequest(w http.ResponseWriter, structure interface{}) {
 	w.Header().Set(variables.ContentType, variables.ApplicationJSON)
 }
 
+// HandleGetRequestById - Такой же обрабочик GET зарпоса но не для всего списка а для
+// поединиченого доступа элемента слайса
 func HandleGetRequestById(w http.ResponseWriter, r *http.Request) {
 
 	path := GetRoute(r.URL.Path)

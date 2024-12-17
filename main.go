@@ -16,6 +16,7 @@ func main() {
 	fmt.Println("Server was launched in http://localhost:8080/Modules")
 
 	err := http.ListenAndServe(":8080", nil)
+
 	if err != nil {
 		return
 	}

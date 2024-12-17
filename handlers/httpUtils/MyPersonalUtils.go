@@ -6,6 +6,7 @@ import (
 	"SatarShipRESTAPI/variables"
 	"encoding/json"
 	"net/http"
+	"sort"
 	"strings"
 )
 
@@ -32,10 +33,14 @@ func structureDistributor(value interface{}) {
 	}
 }
 
+// GetRoute - Функция принимающая на вход строку в которой должен содержаться
+// URL путь, после чего выделяет значимую для определения структуры часть пути
 func GetRoute(Path string) string {
 	return Path[:strings.Index(Path[1:], "/")+2]
 }
 
+// Determiner - Функция распределяющая и обозначающая тип
+// для дальнейшей обработки запроса
 func Determiner(string2 string) interface{} {
 	switch string2 {
 	case variables.CrewRoute:
@@ -48,6 +53,10 @@ func Determiner(string2 string) interface{} {
 	return nil
 }
 
+// findModuleById - Функция определяющая какой именно выдать результат
+// по id который так же определяется исходя из пути запроса в случае,
+// если Determiner определил что пришедший тип это Module из пакета
+// structs
 func findModuleById(id int, w http.ResponseWriter) {
 	for _, module := range variables.Modules {
 		if module.ID == id {
@@ -61,6 +70,10 @@ func findModuleById(id int, w http.ResponseWriter) {
 	}
 }
 
+// findCrewMemberByID - Функция определяющая какой именно выдать результат
+// по id который так же определяется исходя из пути запроса в случае,
+// если Determiner определил что пришедший тип это CrewMember из пакета
+// structs
 func findCrewMemberByID(id int, w http.ResponseWriter) {
 	for _, crewMember := range variables.Crew {
 		if crewMember.ID == id {
@@ -74,6 +87,10 @@ func findCrewMemberByID(id int, w http.ResponseWriter) {
 	}
 }
 
+// findStationResourceByID - Функция определяющая какой именно выдать результат
+// по id который так же определяется исходя из пути запроса в случае,
+// если Determiner определил что пришедший тип это StationResource из пакета
+// structs
 func findStationResourceByID(id int, w http.ResponseWriter) {
 	for _, resource := range variables.StationResources {
 		if resource.ID == id {
@@ -86,3 +103,36 @@ func findStationResourceByID(id int, w http.ResponseWriter) {
 		}
 	}
 }
+
+/*
+Обдумать и переписать по возможности
+*/
+func deleteByID(path string, id int) {
+	switch path {
+	case variables.ModulesRoute:
+		variables.Modules[id-1] = variables.Modules[len(variables.Modules)-1]
+		variables.Modules = variables.Modules[:len(variables.Modules)-1]
+		sort.Slice(variables.Modules, func(i, j int) bool {
+			return variables.Modules[i].ID < variables.Modules[j].ID
+		})
+	case variables.CrewRoute:
+		variables.Crew[id-1] = variables.Crew[len(variables.Crew)-1]
+		variables.Crew = variables.Crew[:len(variables.Crew)-1]
+		sort.Slice(variables.Crew, func(i, j int) bool {
+			return variables.Crew[i].ID < variables.Crew[j].ID
+		})
+	case variables.ResourceRoute:
+		variables.StationResources[id-1] = variables.StationResources[len(variables.StationResources)-1]
+		variables.StationResources = variables.StationResources[:len(variables.StationResources)-1]
+		sort.Slice(variables.StationResources, func(i, j int) bool {
+			return variables.StationResources[i].ID < variables.StationResources[j].ID
+		})
+	}
+}
+
+//
+//func temp [t types.Slice](slid t, i int){
+//	sort.Slice(slid,func(i, j int) bool {
+//		return slid[i] > slid[j]
+//	})
+//}
